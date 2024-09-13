@@ -1,7 +1,7 @@
 public class Pair {
 	
-	private String elemento;
-	private int prioridade;
+	public String elemento;
+	public int prioridade;
 
 	public Pair(String elemento, int prioridade) {
 		this.elemento = elemento;

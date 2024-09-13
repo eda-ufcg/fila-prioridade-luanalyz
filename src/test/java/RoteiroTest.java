@@ -43,7 +43,7 @@ public class RoteiroTest {
 		for (FilaPrioridade fila : estrategias) {
 			assertEquals(fila.removeNext(), "a");
 		}		
-
+		
 		// 5, 4, 3, 2, 1
 		for (FilaPrioridade fila : estrategias) {
 			fila.add("a", 5);

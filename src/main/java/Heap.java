@@ -2,15 +2,15 @@ import java.util.Arrays;
 
 public class Heap {
     
-    private int[] heap;
+    private Pair[] heap;
     private int tail;
     
     public Heap(int capacidade) {
-        this.heap = new int[capacidade];
+        this.heap = new Pair[capacidade];
         this.tail = -1;
     }
     
-    public Heap(int[] heap) {
+    public Heap(Pair[] heap) {
         this.heap = heap;
         this.tail = this.heap.length - 1;
         this.buildHeap();
@@ -37,31 +37,29 @@ public class Heap {
         return (i-1)/2;
     }
 
-    public void add(int n) {
+    public void add(String elemento, int prioridade) {
         if (tail >= (heap.length - 1))
             resize();
     
         this.tail += 1;
-        this.heap[tail] = n;
+        this.heap[tail] = new Pair(elemento, prioridade);
         
         int i = tail;
-        while (i > 0 && this.heap[parent(i)] < this.heap[i]) {
-            int aux = this.heap[i];
-            this.heap[i] = this.heap[parent(i)];
-            this.heap[parent(i)] = aux;
+        while (i > 0 && this.heap[parent(i)].prioridade < this.heap[i].prioridade) {
+            swap(i, parent(i));
             i = parent(i);
         }
     }
     
-    public int remove() {
+    public String remove() {
         if (isEmpty()) throw new RuntimeException("Empty");
-        int element = this.heap[0];
+        Pair element = this.heap[0];
         this.heap[0] = this.heap[tail];
         this.tail -= 1;
 
         this.heapify(0);
         
-        return element;
+        return element.elemento;
     }
         
     private void heapify(int index) {
@@ -80,16 +78,16 @@ public class Heap {
     } 
     
     private int max_index(int index, int left, int right) {
-        if (this.heap[index] > this.heap[left]) {
+        if (this.heap[index].prioridade > this.heap[left].prioridade) {
             if (isValidIndex(right)) {
-                if (this.heap[index] < this.heap[right])
+                if (this.heap[index].prioridade < this.heap[right].prioridade)
                     return right;
             }
             return index;
         
         } else {
             if (isValidIndex(right)) {
-                if (this.heap[left] < this.heap[right])
+                if (this.heap[left].prioridade < this.heap[right].prioridade)
                     return right;
             } 
             
@@ -106,13 +104,13 @@ public class Heap {
     } 
     
     private void swap(int i, int j) {
-        int aux = this.heap[i];
+        Pair aux = this.heap[i];
         this.heap[i] = this.heap[j];
         this.heap[j] = aux;
     }
 
     private void resize() {
-        int[] novoHeap = new int[this.heap.length * 2];
+        Pair[] novoHeap = new Pair[this.heap.length * 2];
         for (int i = 0; i <= tail; i++)
             novoHeap[i] = this.heap[i];
         
